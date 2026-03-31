@@ -1,0 +1,95 @@
+# Abrasel Monitor Legislativo - Docker Compose
+# Ambiente de desenvolvimento local completo
+
+services:
+  # PostgreSQL (Gold Layer)
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: monitor_legislativo
+      POSTGRES_USER: abrasel
+      POSTGRES_PASSWORD: abrasel
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U abrasel -d monitor_legislativo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis (cache e filas)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # LocalStack (emula AWS: S3, SES, DynamoDB, SQS)
+  localstack:
+    image: localstack/localstack:3
+    ports:
+      - "4566:4566"
+    environment:
+      SERVICES: s3,ses,dynamodb,sqs
+      AWS_DEFAULT_REGION: sa-east-1
+    volumes:
+      - localstack_data:/var/lib/localstack
+
+  # Robo - Coleta incremental diaria
+  monitor-incremental:
+    build: .
+    command: ["collect", "camara", "--mode", "incremental"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://abrasel:abrasel@postgres:5432/monitor_legislativo
+      AWS_ENDPOINT_URL: http://localstack:4566
+      AWS_REGION: sa-east-1
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      LOG_LEVEL: INFO
+    volumes:
+      - ./config:/app/config
+      - ./data:/app/data
+
+  # Dashboard Streamlit
+  dashboard:
+    build: .
+    command: ["dashboard"]
+    ports:
+      - "8501:8501"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://abrasel:abrasel@postgres:5432/monitor_legislativo
+    volumes:
+      - ./src:/app/src
+      - ./config:/app/config
+
+  # Metabase (dashboard de producao)
+  metabase:
+    image: metabase/metabase:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: monitor_legislativo
+      MB_DB_PORT: 5432
+      MB_DB_USER: abrasel
+      MB_DB_PASS: abrasel
+      MB_DB_HOST: postgres
+
+volumes:
+  postgres_data:
+  localstack_data:
