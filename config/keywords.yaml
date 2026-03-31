@@ -1,0 +1,141 @@
+# =============================================================================
+# ABRASEL MONITOR LEGISLATIVO - Taxonomia de Palavras-Chave e Temas
+# =============================================================================
+# Este arquivo e gerenciado pela equipe de Relacoes Institucionais da Abrasel.
+# Alteracoes nao requerem deploy - basta atualizar este arquivo no S3.
+# Conforme RN-06 do documento de requisitos.
+# =============================================================================
+
+# Palavras-chave primarias (peso 3) - Alta certeza de impacto no setor
+primarias:
+  estabelecimentos:
+    - bar
+    - restaurante
+    - lanchonete
+    - botequim
+    - churrascaria
+    - pizzaria
+    - padaria
+    - cafeteria
+    - fast food
+    - delivery
+    - food truck
+    - dark kitchen
+    - ghost kitchen
+
+  setor_segmento:
+    - alimentacao fora do lar
+    - food service
+    - servico de alimentacao
+    - refeicao comercial
+    - gastronomia
+    - hospitalidade alimentar
+
+  entidades:
+    - Abrasel
+    - ABIA
+    - ABERC
+    - Sindicato de Bares
+    - Sindicato de Restaurantes
+
+  tributacao_especifica:
+    - SIMPLES Nacional
+    - Anexo I
+    - Anexo II
+    - ISSQN sobre alimentacao
+    - taxa de franquia alimentar
+    - MEI alimentacao
+    - nota fiscal eletronica NFC-e
+
+  trabalhistas_setor:
+    - garcom
+    - garconete
+    - cozinheiro
+    - auxiliar de cozinha
+    - chapeiro
+    - barista
+    - sommelier
+    - CLT servico de alimentacao
+
+# Palavras-chave secundarias (peso 1) - Impacto indireto potencial
+secundarias:
+  tributacao_geral:
+    - ICMS sobre insumos
+    - PIS/COFINS monofasico
+    - Reforma Tributaria
+    - IVA
+    - CBS
+    - IBS
+    - Split Payment
+
+  trabalhista_geral:
+    - jornada de trabalho
+    - hora extra
+    - PLR
+    - ponto eletronico
+    - escala 6x1
+    - banco de horas
+
+  sanitario_regulatorio:
+    - ANVISA
+    - vigilancia sanitaria
+    - alvara sanitario
+    - inspecao de alimentos
+    - boas praticas de fabricacao
+
+  ambiental:
+    - residuo solido
+    - embalagem descartavel
+    - canudo plastico
+    - sacola plastica
+    - lixo organico
+    - coleta seletiva
+
+  alcool_bebidas:
+    - lei seca
+    - bebida alcoolica
+    - cerveja artesanal
+    - vinho
+    - cachaca
+    - AMBEV
+    - regulamentacao de bebidas
+
+  infraestrutura_urbana:
+    - calcada
+    - acessibilidade
+    - alvara de funcionamento
+    - licenca de operacao
+    - zoneamento comercial
+
+  turismo:
+    - turismo gastronomico
+    - turismo de eventos
+    - EMBRATUR
+    - Ministerio do Turismo
+
+# Temas tematicos da API da Camara (peso 2)
+temas_camara:
+  40: "Industria, Comercio e Servicos"
+  46: "Trabalho e Emprego"
+  47: "Tributacao e Orcamento"
+  38: "Saude"
+  49: "Turismo"
+  44: "Meio Ambiente e Desenvolvimento Sustentavel"
+  30: "Direito do Consumidor"
+  48: "Urbanismo e Desenvolvimento Urbano"
+
+# Termos de exclusao (negative keywords) - Reduz falsos positivos
+exclusao:
+  - alimentacao escolar
+  - merenda
+  - alimentacao hospitalar
+  - banco de alimentos
+  - cesta basica
+  - agricultura familiar
+
+# Frentes parlamentares alinhadas ao setor (conforme obs. do documento)
+frentes_parlamentares:
+  - Frente Parlamentar do Comercio, Servicos e Empreendedorismo
+  - Frente Parlamentar do Turismo
+  - Frente Parlamentar do Empreendedorismo
+  - Frente Parlamentar da Micro e Pequena Empresa
