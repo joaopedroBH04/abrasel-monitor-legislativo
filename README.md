@@ -506,5 +506,5 @@ Uso interno Abrasel — todos os direitos reservados.
 
 <div align="center">
   <strong>Abrasel — Associação Brasileira de Bares e Restaurantes</strong><br>
-  Monitor Legislativo v1.0 — Equipe de Dados e Relações Institucionais
+  Monitor Legislativo v1.0 — João Amaral (Dados)
 </div>
